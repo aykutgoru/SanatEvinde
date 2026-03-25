@@ -20,16 +20,18 @@
         }
         .container {
             max-width: 600px;
+            padding: 20px;
         }
         h1 {
-            color: #0D2344; /* İstediğin Koyu Lacivert */
+            color: #0D2344; /* Adobe Laciverti */
             font-size: 3.5rem;
             margin-bottom: 5px;
             letter-spacing: 2px;
             text-transform: uppercase;
+            font-weight: 700;
         }
         p {
-            color: #666666; /* Gri tonu */
+            color: #666666;
             font-size: 1.2rem;
             margin-bottom: 40px;
         }
@@ -37,12 +39,13 @@
             background-color: #0D2344;
             color: white;
             padding: 18px 40px;
-            border-radius: 50px; /* Tam oval */
+            border-radius: 50px; /* Tam Oval */
             text-decoration: none;
             font-weight: bold;
             display: inline-block;
             transition: 0.3s;
             font-size: 1rem;
+            border: none;
         }
         .main-button:hover {
             opacity: 0.8;
@@ -53,13 +56,17 @@
         }
         .social-icons a {
             color: #666666;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin: 0 15px;
             text-decoration: none;
             transition: 0.3s;
         }
         .social-icons a:hover {
             color: #0D2344;
+        }
+        /* Mobilde yazı boyutunu biraz küçültelim */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -69,13 +76,16 @@
         <h1>AYKUT GÖRÜ</h1>
         <p>Müzik Öğretmeni</p>
         
-        <a href="akorlar.html" class="main-button">Tüm Çalışmalarımı Görüntüle</a>
+        <a href="akorlar.html" class="main-button">TÜM ÇALIŞMALARIMI GÖRÜNTÜLE</a>
 
         <div class="social-icons">
-            <a href="https://www.instagram.com/aykutgoru/" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.youtube.com/@SanatEvinde" target="_blank"><i class="fab fa-youtube"></i></a>
-            <a href="mailto:aykutgoru@sanatevinde.com"><i class="far fa-envelope"></i></a>
-            <a href="https://wa.me/905458389524" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.instagram.com/aykutgoru/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            
+            <a href="https://www.youtube.com/@SanatEvinde" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+            
+            <a href="mailto:aykutgoru@sanatevinde.com" title="E-posta"><i class="far fa-envelope"></i></a>
+            
+            <a href="https://wa.me/905458389524" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
         </div>
     </div>
 
