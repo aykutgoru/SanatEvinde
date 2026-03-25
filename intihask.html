@@ -8,114 +8,22 @@
     <style>
         :root { --bg: #ffffff; --text: #1a1a1a; --chord: #d32f2f; --panel: #fcfcfc; --border: #eee; }
         body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: 1fr 320px; gap: 40px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; }
         
-        /* BAŞLIK */
-        .header { grid-column: 1 / -1; text-align: center; margin-bottom: 20px; }
-        h1 { font-size: 2.2rem; color: #0D2344; margin: 0; }
-        .artist { color: #888; text-transform: uppercase; letter-spacing: 2px; }
-
-        /* ÜST PANEL: Transpoze ve Yazı Boyutu */
-        .top-panel { grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border); padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
-        .transpose-section { display: flex; align-items: center; gap: 15px; }
-        .kolay-v-btn { background: #d32f2f; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
-        .transpose-bar { display: flex; gap: 8px; border-left: 1px solid #ddd; padding-left: 15px; }
-        .transpose-bar span { font-weight: bold; cursor: pointer; padding: 2px 6px; border-bottom: 2px solid transparent; transition: 0.3s; }
+        /* ÜST PANEL */
+        .top-panel { grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border); padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .transpose-bar span { font-weight: bold; cursor: pointer; padding: 5px 8px; border-bottom: 2px solid transparent; }
         .active-note { color: var(--chord) !important; border-bottom: 2px solid var(--chord) !important; }
-        .font-section { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 0.9rem; color: #666; }
-        .font-btns button { border: 1px solid #ccc; background: white; padding: 5px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        .kolay-btn { background: #d32f2f; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 10px; font-weight: bold; }
+        .font-btns button { border: 1px solid #ccc; background: white; padding: 5px 10px; cursor: pointer; font-weight: bold; }
 
-        /* SOL TARAF: ŞARKI */
+        /* ŞARKI ALANI */
         .lyrics-area { border-right: 1px solid var(--border); padding-right: 30px; }
-        .section-label { color: #999; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; text-transform: uppercase; }
-        .intro-box { background: #f9f9f9; border: 1px dashed #ccc; padding: 10px 15px; margin-bottom: 30px; border-radius: 6px; font-family: 'Courier Prime', monospace; font-weight: bold; color: var(--chord); font-size: 13pt; }
-        #chords { font-family: 'Courier Prime', monospace; white-space: pre; font-size: 13pt; line-height: 2.2; position: relative; }
-        .chord { color: var(--chord); font-weight: bold; display: inline-block; position: absolute; margin-top: -1.0em; }
+        .intro-box { background: #f9f9f9; border: 1px dashed #ccc; padding: 15px; margin-bottom: 30px; font-family: 'Courier Prime', monospace; color: var(--chord); font-weight: bold; font-size: 13pt; }
+        #chords-container { font-family: 'Courier Prime', monospace; white-space: pre; font-size: 13pt; line-height: 2.2; position: relative; }
+        .chord { color: var(--chord); font-weight: bold; position: absolute; margin-top: -1.1em; display: inline-block; }
 
-        /* SAĞ TARAF: GÖRSEL RİTİM PANELİ */
-        .sidebar-box { background: #fff; border: 1px solid #eee; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center; position: sticky; top: 20px; }
-        .ritim-label { font-weight: 700; color: #2e7d32; font-size: 1.4rem; margin-bottom: 10px; display: block; }
-        .arrow-line { stroke: #2e7d32; stroke-width: 2.5; fill: none; }
-        .accent { font-weight: bold; font-size: 20px; fill: #000; }
-        .ritim-text { font-family: 'Montserrat', sans-serif; font-size: 13px; fill: #666; font-weight: bold; }
-
-        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .lyrics-area { border: none; padding: 0; } .sidebar-box { position: static; } }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="header">
-        <div style="text-align: left;"><a href="repertuar.html" style="text-decoration:none; color:#999; font-size:0.8rem;">← REPERTUAR</a></div>
-        <h1>İNTİHAŞK</h1>
-        <div class="artist">Onur Can Özcan</div>
-    </div>
-
-    <div class="top-panel">
-        <div class="transpose-section">
-            <button class="kolay-v-btn" onclick="transposeTo('A', document.getElementById('note-A'))">KOLAY VERSİYON</button>
-            <div class="transpose-bar">
-                <span onclick="transposeTo('C', this)">C</span>
-                <span onclick="transposeTo('C#', this)">C#</span>
-                <span onclick="transposeTo('D', this)">D</span>
-                <span onclick="transposeTo('D#', this)">D#</span>
-                <span onclick="transposeTo('E', this)">E</span>
-                <span onclick="transposeTo('F', this)">F</span>
-                <span onclick="transposeTo('F#', this)">F#</span>
-                <span onclick="transposeTo('G', this)">G</span>
-                <span onclick="transposeTo('G#', this)">G#</span>
-                <span id="note-A" class="active-note" onclick="transposeTo('A', this)">A</span>
-                <span onclick="transposeTo('A#', this)">A#</span>
-                <span onclick="transposeTo('B', this)">B</span>
-            </div>
-        </div>
-        <div class="font-section">
-            Yazı Boyutu
-            <div class="font-btns">
-                <button onclick="resize(2)">A+</button>
-                <button onclick="resize(-2)">A-</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="lyrics-area">
-        <div class="section-label">[Intro]</div>
-        <div class="intro-box"><span class="c-note">Am</span> - <span class="c-note">E</span> - <span class="c-note">F</span> - <span class="c-note">E</span>  (x2)</div>
-        
-        <div class="section-label">[Sözler]</div>
-        <div id="chords">
-<span class="chord c-note">Am</span>                    <span class="chord c-note">E</span>
-Bir tek dileğim var mutlusundur umarım
-<span class="chord c-note">F</span>                   <span class="chord c-note">E</span>
-Yüzünü unuttum ama sesin hala canım
-
-<span class="chord c-note">Dm</span>                   <span class="chord c-note">Am</span>
-Benim için hayat hala devam ediyor
-<span class="chord c-note">F</span>                    <span class="chord c-note">E</span>
-Senin için bitti her şey biliyorum
-        </div>
-    </div>
-
-    <div class="sidebar">
-        <div class="sidebar-box">
-            <span class="ritim-label">Ritim</span>
-            <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
-                <line x1="20" y1="80" x2="380" y2="80" stroke="#000" stroke-width="2" />
-                <path d="M40 30 L40 70 M35 65 L40 70 L45 65" class="arrow-line" />
-                <text x="35" y="85" class="accent">></text>
-                <path d="M75 120 L75 90 M70 95 L75 90 L80 95" class="arrow-line" />
-                <path d="M100 90 L100 120 M95 115 L100 120 L105 115" class="arrow-line" />
-                <text x="35" y="150" class="ritim-text">AN-KA-RA</text>
-                <path d="M140 90 L140 120 M135 115 L140 120 L145 115" class="arrow-line" />
-                <path d="M170 120 L170 90 M165 95 L170 90 L175 95" class="arrow-line" />
-                <path d="M200 90 L200 120 M195 115 L200 120 L205 115" class="arrow-line" />
-                <text x="195" y="85" class="accent">></text>
-                <text x="140" y="150" class="ritim-text">KA-RA-MAN</text>
-                <path d="M245 90 L245 120 M240 115 L245 120 L250 115" class="arrow-line" />
-                <path d="M265 120 L265 90 M260 95 L265 90 L270 95" class="arrow-line" />
-                <path d="M285 90 L285 120 M280 115 L285 120 L290 115" class="arrow-line" />
-                <path d="M305 120 L305 90 M300 95 L305 90 L310 95" class="arrow-line" />
-                <text x="245" y="150" class="ritim-text">GE-Lİ-BO-LU</text>
-                <path d="M345 90 L345 120 M340 115 L345 120 L350 115" class="arrow-line" />
-                <text x="340" y="85" class="accent">></text>
-                <text x="3
+        /* RİTİM BÖLÜMÜ (YENİ) */
+        .sidebar-box { background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px; position: sticky; top: 20px; text-align: center; }
+        .ritim-title { font-weight: bold; color: #2e7d32; display: block; margin-bottom: 15px; font-size: 1.2rem; }
+        .ritim-display { font-family: 'Courier Prime', monospace; font-size: 1.4rem; line-
