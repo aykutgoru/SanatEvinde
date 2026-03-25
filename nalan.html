@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title} - SanatEvinde</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --main-blue: #0D2344; --chord-red: #d32f2f; --bg-light: #fdfdfd; --border: #eee; }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; background: var(--bg-light); color: #333; }
+        header { background: #fff; border-bottom: 2px solid var(--main-blue); padding: 12px 4%; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--main-blue); text-decoration: none; }
+        .search-container { position: relative; flex-grow: 1; max-width: 350px; margin: 0 20px; }
+        .search-bar input { width: 100%; padding: 8px 15px; border-radius: 20px; border: 1px solid #ddd; outline: none; }
+        #search-results { position: absolute; top: 110%; left: 0; width: 100%; background: #fff; border: 1px solid #ddd; border-radius: 8px; display: none; z-index: 2000; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .result-item { padding: 10px 15px; cursor: pointer; border-bottom: 1px solid #eee; font-size: 0.9rem; font-weight: 600; }
+        .nav-btns a { text-decoration: none; color: #555; font-weight: 700; font-size: 0.85rem; margin-left: 15px; }
+        .layout { display: grid; grid-template-columns: 120px 1fr 260px; gap: 20px; padding: 25px 3%; max-width: 1300px; margin: auto; }
+        .chord-list { display: flex; flex-direction: column; gap: 15px; }
+        .chord-card { background: #fff; border: 1px solid var(--border); padding: 10px; border-radius: 8px; text-align: center; }
+        .chord-name { font-weight: 800; color: var(--main-blue); display: block; margin-bottom: 5px; }
+        .chord-placeholder { width: 100%; height: 70px; background: #f8f9fa; border: 1px dashed #ddd; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 0.6rem; }
+        .main-box { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 25px; min-width: 0; }
+        .song-title { font-size: 2.2rem; color: var(--main-blue); text-transform: uppercase; font-weight: 800; margin: 0; }
+        .song-artist { font-size: 1.1rem; color: #777; margin: 5px 0 20px 0; }
+        .action-bar { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 12px 0; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .btn { border: 1px solid #ddd; background: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.75rem; }
+        .rep-btn { background: var(--main-blue); color: white; border: none; }
+        .transpose-row { margin-bottom: 25px; display: flex; align-items: center; gap: 4px; font-weight: 700; white-space: nowrap; overflow-x: auto; }
+        .t-btn { cursor: pointer; padding: 5px 7px; border-radius: 5px; border: 1px solid #eee; background: #fdfdfd; min-width: 30px; text-align: center; font-size: 0.75rem; }
+        .t-active { background: var(--chord-red); color: white; border-color: var(--chord-red); }
+        .simple-btn { background: #2e7d32; color: white; border: none; padding: 6px 10px; margin-left: 8px; border-radius: 5px; font-size: 0.65rem; cursor: pointer; font-weight: 800; flex-shrink: 0; }
+        
+        /* ÖNEMLİ: ŞARKININ GÖRÜNECEĞİ YER */
+        #lyrics-container { 
+            font-family: 'Courier Prime', monospace; 
+            font-size: 12pt; line-height: 2.4; 
+            white-space: pre; /* Yazılan tüm boşlukları korur */
+            position: relative; margin-top: 25px; padding-left: 15px; border-left: 2px solid #f0f0f0; 
+        }
+        .chord { color: var(--chord-red); font-weight: 700; }
+
+        .sidebar { display: flex; flex-direction: column; gap: 20px; }
+        .ritim-box { background: #fff; border: 2px solid var(--main-blue); border-radius: 10px; padding: 15px; text-align: center; }
+        .ritim-title { color: #2e7d32; font-weight: 800; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        .ritim-display { font-family: 'Courier Prime', monospace; font-size: 1.2rem; }
+        .ritim-line { border-top: 2px solid #333; margin: 4px 0; }
+        .benzer-box { background: #fff; border: 1px solid var(--border); padding: 15px; border-radius: 10px; }
+        .benzer-title { font-weight: 800; color: var(--main-blue); font-size: 0.85rem; display: block; margin-bottom: 10px; }
+        .benzer-list { list-style: none; padding: 0; margin: 0; font-size: 0.8rem; font-weight: 700; color: #666; line-height: 2; }
+        @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } .chord-list { display: none; } .sidebar { order: -1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; } }
+    </style>
+</head>
+<body>
+<header>
+    <a href="repertuar.html" class="logo">SanatEvinde</a>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Şarkı ara... 🔍">
+    </div>
+    <div class="nav-btns">
+        <a href="repertuar.html">REPERTUARIM</a>
+        <a href="#">PROFİLİM 👤</a>
+    </div>
+</header>
+<div class="layout">
+    <div class="chord-list">
+        <div class="chord-card"><span class="chord-name">Am</span><div class="chord-placeholder">AKOR</div></div>
+        <div class="chord-card"><span class="chord-name">E</span><div class="chord-placeholder">AKOR</div></div>
+    </div>
+    <div class="main-box">
+        <h1 class="song-title">${title}</h1>
+        <div class="song-artist">${artist}</div>
+        <div class="action-bar">
+            <button class="btn rep-btn">✚ REPERTUARIMA EKLE</button>
+            <button class="btn">❤️ FAVORİLERİME EKLE</button>
+            <button class="btn" onclick="window.print()">📄 PDF İNDİR</button>
+        </div>
+        <div class="transpose-row">
+            <span class="t-btn" onclick="transpose('C', this)">C</span><span class="t-btn" onclick="transpose('C#', this)">C#</span><span class="t-btn" onclick="transpose('D', this)">D</span><span class="t-btn" onclick="transpose('D#', this)">D#</span><span class="t-btn" onclick="transpose('E', this)">E</span><span class="t-btn" onclick="transpose('F', this)">F</span><span class="t-btn" onclick="transpose('F#', this)">F#</span><span class="t-btn" onclick="transpose('G', this)">G</span><span class="t-btn" onclick="transpose('G#', this)">G#</span><span class="t-btn t-active" id="pk" onclick="transpose('A', this)">A</span><span class="t-btn" onclick="transpose('A#', this)">A#</span><span class="t-btn" onclick="transpose('B', this)">B</span>
+            <button class="simple-btn" onclick="transpose('A', document.getElementById('pk'))">BASİTLEŞTİRİLMİŞ VERSİYON</button>
+        </div>
+        <div id="lyrics-container">${processedLyrics}</div>
+    </div>
+    <div class="sidebar">
+        <div class="ritim-box"><span class="ritim-title">RİTİM METODU</span><div class="ritim-display"><div style="color: #2e7d32;">V . . . . .</div><div class="ritim-line"></div><div style="color: #333;">. . ^ ^ V ^ V</div></div></div>
+        <div class="benzer-box"><span class="benzer-title">BENZER ŞARKILAR</span><ul class="benzer-list"><li>• Şarkı 1</li><li>• Şarkı 2</li></ul></div>
+    </div>
+</div>
+<script>
+    const notes=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    let curIdx=9;
+    function transpose(note, el){
+        let targetIdx=notes.indexOf(note);
+        let diff=targetIdx-curIdx;
+        if(el){ document.querySelectorAll('.t-btn').forEach(b=>b.classList.remove('t-active')); el.classList.add('t-active'); }
+        document.querySelectorAll('.n').forEach(item=>{
+            item.innerText=item.innerText.replace(/[A-G][#b]?/g, m=>{
+                let n=m==='Bb'?'A#':m==='Eb'?'D#':m==='Ab'?'G#':m==='Db'?'C#':m==='Gb'?'F#':m;
+                return notes[(notes.indexOf(n)+diff+12)%12];
+            });
+        });
+        curIdx=targetIdx;
+    }
+    function resize(d){ let el=document.getElementById('lyrics-container'); let s=parseFloat(window.getComputedStyle(el).fontSize); el.style.fontSize=(s+d)+'px'; }
+</script>
+</body>
+</html>
