@@ -11,24 +11,21 @@
         
         h1 { font-size: 2.5rem; letter-spacing: 8px; text-align: center; font-weight: 300; text-transform: uppercase; margin-bottom: 50px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
 
-        /* SÜTUN YAPISI: Şarkılar önce aşağı doğru dizilir */
+        /* ŞARKI LİSTESİ: Alt alta dizilimi garanti eder */
         .song-list {
-            display: block;
-            column-count: 2; /* 2 Sütun yap */
-            column-gap: 80px; /* Sütunlar arası boşluk */
+            display: flex;
+            flex-direction: column; /* Şarkıları alt alta diz */
+            flex-wrap: wrap;       /* Sığmazsa yana geç */
+            max-height: 1200px;    /* Burası önemli: 20-25 şarkıdan sonra sağa geçmesini sağlar */
             padding: 0;
             list-style: none;
-        }
-
-        /* Mobil ekranda tek sütuna düş */
-        @media (max-width: 768px) {
-            .song-list { column-count: 1; }
+            gap: 5px 80px;         /* Satır ve sütun arası boşluk */
         }
 
         .song-list li { 
+            width: 45%;            /* Her şarkı sütunun neredeyse yarısını kaplasın */
             border-bottom: 1px solid #f0f0f0; 
             padding: 12px 0; 
-            break-inside: avoid; /* Şarkı isminin yarısı bir sütunda yarısı diğerinde kalmasın */
         }
         
         .song-list a {
@@ -39,7 +36,6 @@
             transition: 0.3s ease;
         }
 
-        /* İstediğin o güzel kayma hareketi */
         .song-list a:hover { 
             color: #d32f2f; 
             padding-left: 10px; 
@@ -49,11 +45,15 @@
             color: #ccc; 
             font-size: 0.8rem; 
             margin-right: 15px; 
-            font-weight: 400;
         }
 
         .back-link { text-decoration: none; color: #999; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
-        .back-link:hover { color: #000; }
+
+        /* Mobil ekranda her şeyi tek sütun yap */
+        @media (max-width: 768px) {
+            .song-list { max-height: none; }
+            .song-list li { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -63,16 +63,8 @@
     <h1>REPERTUARIM</h1>
 
     <ul class="song-list">
-        <li>
-            <a href="caddelerde-ruzgar.html">
-                <span class="song-number">01</span> Caddelerde Rüzgar
-            </a>
-        </li>
-        <li>
-            <a href="akdeniz-aksamlari.html">
-                <span class="song-number">02</span> Akdeniz Akşamları
-            </a>
-        </li>
+        <li><a href="caddelerde-ruzgar.html"><span class="song-number">01</span> Caddelerde Rüzgar</a></li>
+        <li><a href="akdeniz-aksamlari.html"><span class="song-number">02</span> Akdeniz Akşamları</a></li>
         </ul>
 </div>
 
