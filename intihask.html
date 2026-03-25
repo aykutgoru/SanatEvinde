@@ -4,128 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>İntihaşk - Onur Can Özcan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #ffffff; --text: #1a1a1a; --chord: #d32f2f; --panel: #fcfcfc; --border: #eee; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; padding: 20px; background: #fff; color: #333; }
+        .container { max-width: 1000px; margin: auto; display: flex; flex-wrap: wrap; gap: 30px; }
+        .main { flex: 1; min-width: 300px; }
         
-        /* ÜST PANEL */
-        .top-panel { grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border); padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .transpose-bar span { font-weight: bold; cursor: pointer; padding: 5px 8px; border-bottom: 2px solid transparent; }
-        .active-note { color: var(--chord) !important; border-bottom: 2px solid var(--chord) !important; }
-        .kolay-btn { background: #d32f2f; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 10px; font-weight: bold; }
-        .font-btns button { border: 1px solid #ccc; background: white; padding: 5px 10px; cursor: pointer; font-weight: bold; }
+        /* Kontrol Paneli */
+        .panel { background: #f4f4f4; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .tp-bar span { font-weight: bold; cursor: pointer; padding: 0 5px; border-bottom: 2px solid transparent; }
+        .active { color: red; border-bottom: 2px solid red; }
+        
+        /* Şarkı Alanı */
+        .intro { background: #eee; padding: 10px; margin-bottom: 20px; font-family: 'Courier Prime', monospace; font-weight: bold; color: red; }
+        #lyrics { font-family: 'Courier Prime', monospace; white-space: pre; line-height: 2.5; font-size: 13pt; position: relative; }
+        .c { color: red; font-weight: bold; position: absolute; margin-top: -1.2em; }
 
-        /* ŞARKI ALANI */
-        .lyrics-area { border-right: 1px solid var(--border); padding-right: 30px; }
-        .intro-box { background: #f9f9f9; border: 1px dashed #ccc; padding: 15px; margin-bottom: 30px; font-family: 'Courier Prime', monospace; color: var(--chord); font-weight: bold; font-size: 13pt; }
-        #chords-container { font-family: 'Courier Prime', monospace; white-space: pre; font-size: 13pt; line-height: 2.2; position: relative; }
-        .chord { color: var(--chord); font-weight: bold; position: absolute; margin-top: -1.1em; display: inline-block; }
-
-        /* RİTİM BÖLÜMÜ (YENİ) */
-        .sidebar-box { background: #fff; border: 1px solid #ddd; padding: 20px; border-radius: 8px; position: sticky; top: 20px; text-align: center; }
-        .ritim-title { font-weight: bold; color: #2e7d32; display: block; margin-bottom: 15px; font-size: 1.2rem; }
-        .ritim-display { font-family: 'Courier Prime', monospace; font-size: 1.4rem; line-height: 1.2; display: inline-block; text-align: left; }
-        .line { border-top: 2px solid #333; margin: 5px 0; width: 100%; }
-        .heceler { font-family: 'Montserrat', sans-serif; font-size: 0.7rem; color: #666; margin-top: 10px; letter-spacing: 1px; }
-
-        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } .lyrics-area { border: none; } }
+        /* Ritim Kutusu */
+        .sidebar { width: 280px; border: 1px solid #ddd; padding: 15px; border-radius: 10px; height: fit-content; text-align: center; }
+        .line { border-top: 2px solid #000; margin: 5px 0; }
+        .ritim-box { font-family: 'Courier Prime', monospace; font-size: 1.3rem; text-align: left; display: inline-block; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header" style="grid-column: 1/-1; text-align: center;">
+    <div style="width:100%; text-align:center;">
         <h1>İNTİHAŞK</h1>
-        <p style="color: #888;">Onur Can Özcan</p>
+        <p>Onur Can Özcan</p>
     </div>
 
-    <div class="top-panel">
+    <div class="panel" style="width:100%;">
         <div>
-            <button class="kolay-btn" onclick="transposeTo('A', document.getElementById('note-A'))">KOLAY VERSİYON</button>
-            <span class="transpose-bar">
-                <span onclick="transposeTo('C', this)">C</span>
-                <span onclick="transposeTo('C#', this)">C#</span>
-                <span onclick="transposeTo('D', this)">D</span>
-                <span onclick="transposeTo('D#', this)">D#</span>
-                <span onclick="transposeTo('E', this)">E</span>
-                <span onclick="transposeTo('F', this)">F</span>
-                <span onclick="transposeTo('F#', this)">F#</span>
-                <span onclick="transposeTo('G', this)">G</span>
-                <span onclick="transposeTo('G#', this)">G#</span>
-                <span id="note-A" class="active-note" onclick="transposeTo('A', this)">A</span>
-                <span onclick="transposeTo('A#', this)">A#</span>
-                <span onclick="transposeTo('B', this)">B</span>
-            </span>
-        </div>
-        <div>
-            Yazı Boyutu: 
-            <button onclick="changeSize(2)">A+</button>
-            <button onclick="changeSize(-2)">A-</button>
-        </div>
-    </div>
-
-    <div class="lyrics-area">
-        <div class="intro-box">
-            [INTRO]<br>
-            <span class="c-note">Am</span> - <span class="c-note">E</span> - <span class="c-note">F</span> - <span class="c-note">E</span>
-        </div>
-        
-        <div id="chords-container">
-<span class="chord c-note">Am</span>                    <span class="chord c-note">E</span>
-Bir tek dileğim var mutlusundur umarım
-<span class="chord c-note">F</span>                   <span class="chord c-note">E</span>
-Yüzünü unuttum ama sesin hala canım
-
-<span class="chord c-note">Dm</span>                   <span class="chord c-note">Am</span>
-Benim için hayat hala devam ediyor
-<span class="chord c-note">F</span>                    <span class="chord c-note">E</span>
-Senin için bitti her şey biliyorum
-        </div>
-    </div>
-
-    <div class="sidebar">
-        <div class="sidebar-box">
-            <span class="ritim-title">RİTİM</span>
-            <div class="ritim-display">
-                <div style="color: #2e7d32;">V   .   .   .   .   .   .</div> <div class="line"></div>
-                <div style="color: #333;">.   .   ^   ^   V   ^   V</div> <div class="heceler">AN-KA-RA  KA-RA-MAN</div>
-            </div>
-            <p style="font-size: 0.7rem; color: #999; margin-top: 15px;">V: Aşağı | ^: Yukarı</p>
-        </div>
-    </div>
-</div>
-
-<script>
-    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-    let currentKeyIndex = 9; // A (Am)
-
-    function transposeTo(targetNote, el) {
-        const targetIndex = notes.indexOf(targetNote);
-        const diff = targetIndex - currentKeyIndex;
-        
-        document.querySelectorAll('.transpose-bar span').forEach(s => s.classList.remove('active-note'));
-        el.classList.add('active-note');
-
-        document.querySelectorAll('.c-note').forEach(chordEl => {
-            let text = chordEl.innerText;
-            chordEl.innerText = text.replace(/[A-G][#b]?/g, (match) => {
-                let note = match === 'Bb' ? 'A#' : (match === 'Eb' ? 'D#' : (match === 'Ab' ? 'G#' : (match === 'Db' ? 'C#' : (match === 'Gb' ? 'F#' : match))));
-                let idx = notes.indexOf(note);
-                return notes[(idx + diff + 12) % 12];
-            });
-        });
-        currentKeyIndex = targetIndex;
-    }
-
-    function changeSize(delta) {
-        const container = document.getElementById('chords-container');
-        const intro = document.querySelector('.intro-box');
-        let currentSize = parseInt(window.getComputedStyle(container).fontSize);
-        container.style.fontSize = (currentSize + delta) + 'px';
-        intro.style.fontSize = (currentSize + delta) + 'px';
-    }
-</script>
-</body>
-</html>
