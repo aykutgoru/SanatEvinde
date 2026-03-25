@@ -3,49 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İntihaşk - Onur Can Özcan | Repertuarım</title>
+    <title>İntihaşk - Onur Can Özcan</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #ffffff; --text: #1a1a1a; --chord: #d32f2f; --panel: #fcfcfc; --border: #eee; }
-        .dark-mode { --bg: #121212; --text: #e0e0e0; --chord: #ff5252; --panel: #1e1e1e; --border: #333; }
-        
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); transition: 0.3s; margin: 0; padding: 0; line-height: 1.6; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; }
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: 1fr 280px; gap: 40px; }
         
-        /* Geri Dön Linki */
-        .back-nav { grid-column: 1 / -1; margin-bottom: 10px; }
-        .back-nav a { text-decoration: none; color: #888; font-size: 0.8rem; letter-spacing: 1px; }
+        .header { grid-column: 1 / -1; text-align: center; margin-bottom: 20px; }
+        h1 { font-size: 2.2rem; color: #0D2344; margin: 0; }
+        .artist { color: #888; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* Başlık Alanı */
-        .song-header { grid-column: 1 / -1; text-align: center; margin-bottom: 20px; }
-        h1 { font-size: 2.5rem; margin: 0; font-weight: 700; color: #0D2344; }
-        .dark-mode h1 { color: #fff; }
-        .artist { color: #888; text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; margin-top: 10px; }
+        /* ÜST PANEL: Transpoze Harfleri */
+        .top-panel { grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border); padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .transpose-bar { display: flex; gap: 10px; border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+        .transpose-bar span { font-weight: bold; cursor: pointer; padding: 5px 8px; }
+        .active { color: var(--chord); border-bottom: 2px solid var(--chord); }
+        .font-btns button { border: 1px solid #ccc; background: white; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-weight: bold; }
 
-        /* --- ÜST KONTROL PANELİ (Görsel Örnekteki Gibi) --- */
-        .top-controls { 
-            grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 15px; 
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;
-        }
+        /* SOL: ŞARKI */
+        .lyrics-area { border-right: 1px solid var(--border); padding-right: 30px; }
+        .intro-box { background: #f9f9f9; border: 1px dashed #ccc; padding: 15px; margin: 20px 0; font-family: 'Courier Prime', monospace; font-weight: bold; color: var(--chord); }
+        #chords { font-family: 'Courier Prime', monospace; white-space: pre; font-size: 1.2rem; line-height: 2.4; }
+        .chord { color: var(--chord); font-weight: bold; position: absolute; margin-top: -1.2em; }
 
-        /* Harf Transpoze Sistemi */
-        .transpose-letters { display: flex; align-items: center; gap: 5px; }
-        .transpose-letters span { font-weight: bold; font-size: 1.1rem; color: #555; cursor: pointer; padding: 5px 10px; border-radius: 4px; transition: 0.2s; }
-        .dark-mode .transpose-letters span { color: #bbb; }
-        .transpose-letters span:hover { background: rgba(211, 47, 47, 0.1); color: var(--chord); }
-        .transpose-letters .active-note { background: var(--chord); color: white !important; }
+        /* SAĞ: RİTİM */
+        .sidebar-box { background: var(--panel); border: 1px solid var(--border); padding: 20px; border-radius: 8px; position: sticky; top: 20px; }
+        .ritim-label { font-weight: bold; border-bottom: 2px solid var(--chord); margin-bottom: 10px; display: inline-block; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>İNTİHAŞK</h1>
+        <div class="artist">Onur Can Özcan</div>
+    </div>
 
-        /* Yazı Boyutu ve Mod Butonları */
-        .right-btns { display: flex; gap: 10px; align-items: center; }
-        .btn-box { background: #eee; color: #333; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .dark-mode .btn-box { background: #333; color: #eee; }
-        .mode-btn { background: #555; color: white; }
+    <div class="top-panel">
+        <div class="transpose-bar">
+            <span>C</span><span>C#</span><span>D</span><span>D#</span><span>E</span><span>F</span><span>F#</span><span>G</span><span>G#</span><span class="active">A</span><span>A#</span><span>B</span>
+        </div>
+        <div class="font-btns">
+            <button onclick="resize(1)">A+</button>
+            <button onclick="resize(-1)">A-</button>
+        </div>
+    </div>
 
-        /* --- SOL TARAF: ŞARKI İÇERİĞİ --- */
-        .main-content { border-right: 1px solid var(--border); padding-right: 40px; }
+    <div class="lyrics-area">
+        <div style="color: #999; font-weight: bold;">[INTRO]</div>
+        <div class="intro-box">Am - E - F - E  (x2)</div>
         
-        .section-title { font-weight: bold; color: #888; margin-top: 30px; margin-bottom: 10px; font-size: 0.9rem; text-transform: uppercase; }
-        
-        .intro-block { background: var(--panel); border: 1px solid var(--border); padding: 15px; border-radius: 8px; font-family: 'Courier Prime', monospace; font-size: 1.1rem; color: var(--chord); font-weight: bold; }
+        <div id="chords">
+<span class="chord">Am</span>                    <span class="chord">E</span>
+Bir tek dileğim var mutlusundur umarım
+<span class="chord">F</span>                   <span class="chord">E</span>
+Yüzünü unuttum ama sesin hala canım
+        </div>
+    </div>
 
-        #chord-content { font-family: 'Courier Prime', monospace; white-space: pre; font-size: 1.15rem; line-
+    <div class="sidebar">
+        <div class="sidebar-box">
+            <div class="ritim-label">RİTİM</div>
+            <div style="font-family: 'Courier Prime'; letter-spacing: 2px;">V  V  ^  ^  V  ^</div>
+            <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">4/4 Slow Pop</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function resize(delta) {
+        let el = document.getElementById('chords');
+        let cur = parseFloat(window.getComputedStyle(el).fontSize);
+        el.style.fontSize = (cur + delta) + 'px';
+    }
+    // Transpoze mantığı buraya eklenecek, şimdilik görsel yapı hazır.
+</script>
+</body>
+</html>
