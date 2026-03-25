@@ -2,29 +2,167 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>İntihaşk - Onur Can Özcan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İntihaşk - SanatEvinde</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; padding: 20px; line-height: 1.4; background: #fff; }
-        .container { max-width: 1000px; margin: auto; }
+        :root { --main-blue: #0D2344; --chord-red: #d32f2f; --bg-light: #fdfdfd; }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; background: var(--bg-light); color: #333; }
         
-        /* Kontrol Paneli */
-        .ust-panel { background: #f9f9f9; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .btn { padding: 5px 10px; cursor: pointer; font-weight: bold; }
-        .akor-btn { border: none; background: none; font-weight: bold; cursor: pointer; padding: 5px; font-size: 1rem; }
-        .active { color: red; border-bottom: 2px solid red; }
+        /* 1. ÜST BAR (NAVBAR) */
+        header { background: #fff; border-bottom: 2px solid var(--main-blue); padding: 10px 4%; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--main-blue); text-decoration: none; letter-spacing: -1px; }
+        .search-bar { flex-grow: 1; max-width: 400px; margin: 0 20px; position: relative; }
+        .search-bar input { width: 100%; padding: 8px 15px; border-radius: 20px; border: 1px solid #ddd; font-family: inherit; }
+        .nav-btns a { text-decoration: none; color: #666; font-weight: bold; font-size: 0.9rem; margin-left: 15px; }
 
-        /* Ritim Kutusu (Sağ Taraf) */
-        .ritim-kutusu { border: 2px solid #333; padding: 15px; width: 220px; float: right; margin-left: 20px; text-align: center; border-radius: 10px; }
-        .ritim-title { font-weight: bold; color: green; margin-bottom: 10px; display: block; }
-        .ritim-notasyon { font-family: monospace; font-size: 1.4rem; text-align: left; display: inline-block; line-height: 1; }
-        .cizgi { border-top: 2px solid #000; margin: 4px 0; width: 100%; }
+        .layout { display: grid; grid-template-columns: 120px 1fr 280px; gap: 25px; padding: 30px 4%; max-width: 1400px; margin: auto; }
 
-        /* Şarkı Alanı */
-        .intro { background: #eee; padding: 10px; margin-bottom: 20px; font-weight: bold; color: red; font-family: monospace; font-size: 12pt; }
-        #sarki-alani { font-family: monospace; white-space: pre; font-size: 12pt; line-height: 2.2; position: relative; margin-top: 30px; }
-        .akor { color: red; font-weight: bold; position: absolute; margin-top: -1.1em; display: inline-block; }
+        /* 2. SOL PANEL (AKORLAR) */
+        .chord-list { display: flex; flex-direction: column; gap: 20px; }
+        .chord-card { background: #fff; border: 1px solid #eee; padding: 10px; border-radius: 6px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .chord-name { font-weight: bold; color: var(--main-blue); margin-bottom: 5px; display: block; }
+        .chord-img { width: 100%; height: 80px; background: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 0.7rem; }
 
-        @media (max-width: 800px) { .ritim-kutusu { float: none; width: 100%; margin: 0 0 20px 0; } }
+        /* 3. ORTA PANEL (ANA İÇERİK) */
+        .main-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.03); }
+        .song-title { font-size: 2rem; color: var(--main-blue); margin-bottom: 5px; }
+        .song-info { color: #888; margin-bottom: 25px; }
+
+        .action-bar { border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 15px 0; margin-bottom: 25px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .action-btn { border: 1px solid #ddd; background: #fff; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-family: inherit; font-size: 0.85rem; font-weight: bold; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+        .action-btn:hover { background: #f9f9f9; border-color: #bbb; }
+        .rep-btn { background: var(--main-blue) !important; color: #white !important; border-color: var(--main-blue); color: white; }
+
+        .transpose-row { margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 0.9rem; }
+        .t-btn { cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+        .t-active { color: var(--chord-red); text-decoration: underline; }
+
+        /* ŞARKI VE AKORLAR (12 PUNTO) */
+        #lyrics-container { font-family: 'Courier Prime', monospace; font-size: 12pt; line-height: 2.3; white-space: pre; position: relative; margin-top: 20px; }
+        .chord { color: var(--chord-red); font-weight: bold; position: absolute; margin-top: -1.1em; display: inline-block; }
+
+        /* VİDEO ALANI */
+        .video-container { margin-top: 40px; border-radius: 12px; overflow: hidden; background: #000; aspect-ratio: 16/9; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+
+        /* 4. SAĞ PANEL (RİTİM & BENZERLER) */
+        .sidebar { display: flex; flex-direction: column; gap: 30px; }
+        .ritim-box { background: #fff; border: 2px solid var(--main-blue); border-radius: 10px; padding: 20px; text-align: center; }
+        .ritim-title { font-weight: 800; color: #2e7d32; font-size: 1.1rem; display: block; margin-bottom: 15px; }
+        .ritim-display { font-family: 'Courier Prime', monospace; font-size: 1.4rem; line-height: 1; text-align: left; display: inline-block; }
+        .ritim-line { border-top: 2px solid #333; margin: 5px 0; }
+
+        @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } .chord-list { display: none; } .sidebar { order: -1; } }
     </style>
 </head>
 <body>
+
+<header>
+    <a href="index.html" class="logo">SanatEvinde</a>
+    <div class="search-bar">
+        <input type="text" placeholder="Şarkı veya sanatçı ara... 🔍">
+    </div>
+    <div class="nav-btns">
+        <a href="repertuarim.html">REPERTUARIM</a>
+        <a href="#">PROFİLİM 👤</a>
+    </div>
+</header>
+
+<div class="layout">
+    <div class="chord-list">
+        <div class="chord-card"><span class="chord-name">Am</span><div class="chord-img">Diyagram</div></div>
+        <div class="chord-card"><span class="chord-name">E</span><div class="chord-img">Diyagram</div></div>
+        <div class="chord-card"><span class="chord-name">F</span><div class="chord-img">Diyagram</div></div>
+    </div>
+
+    <div class="main-box">
+        <h1 class="song-title">İntihaşk</h1>
+        <div class="song-info">Onur Can Özcan | Pop Ballad</div>
+
+        <div class="action-bar">
+            <button class="action-btn rep-btn" onclick="alert('Repertuarınıza Ekleldi!')">✚ REPERTUARIMA EKLE</button>
+            <button class="action-btn">❤️ FAVORİ</button>
+            <button class="action-btn" onclick="window.print()">📄 PDF İNDİR</button>
+            <div style="margin-left:auto;">
+                Boyut: <button class="action-btn" onclick="resize(1)">A+</button>
+                <button class="action-btn" onclick="resize(-1)">A-</button>
+            </div>
+        </div>
+
+        <div class="transpose-row">
+            Ton: 
+            <span class="t-btn" onclick="transpose('C', this)">C</span>
+            <span class="t-btn" onclick="transpose('D', this)">D</span>
+            <span class="t-btn" onclick="transpose('E', this)">E</span>
+            <span class="t-btn" onclick="transpose('F', this)">F</span>
+            <span class="t-btn" onclick="transpose('G', this)">G</span>
+            <span class="t-btn t-active" id="def-key" onclick="transpose('A', this)">A</span>
+            <span class="t-btn" onclick="transpose('B', this)">B</span>
+        </div>
+
+        <div id="lyrics-container">
+<span class="chord n">Am</span>                    <span class="chord n">E</span>
+Bir tek dileğim var mutlusundur umarım
+<span class="chord n">F</span>                   <span class="chord n">E</span>
+Yüzünü unuttum ama sesin hala canım
+
+<span class="chord n">Dm</span>                   <span class="chord n">Am</span>
+Benim için hayat hala devam ediyor
+<span class="chord n">F</span>                    <span class="chord n">E</span>
+Senin için bitti her şey biliyorum
+        </div>
+
+        <div class="video-container">
+            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ÖRN_LİNK" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="ritim-box">
+            <span class="ritim-title">RİTİM METODU</span>
+            <div class="ritim-display">
+                <div style="color: #2e7d32;">V . . . . . .</div>
+                <div class="ritim-line"></div>
+                <div style="color: #333;">. . ^ ^ V ^ V</div>
+            </div>
+            <p style="font-size: 0.8rem; font-weight: bold; margin-top: 12px; color: #666;">AN-KA-RA KA-RA-MAN</p>
+        </div>
+
+        <div style="background:#fff; border:1px solid #eee; padding:15px; border-radius:10px;">
+            <span style="font-weight:bold; color:var(--main-blue);">BENZER ŞARKILAR</span>
+            <ul style="padding:15px 0 0 15px; margin:0; font-size:0.85rem; color:#555;">
+                <li>Yaramızda Kalsın</li>
+                <li>Hırka</li>
+                <li>Çilingir</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    let curIdx = 9;
+
+    function transpose(note, el) {
+        let targetIdx = notes.indexOf(note);
+        let diff = targetIdx - curIdx;
+        document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('t-active'));
+        el.classList.add('t-active');
+        document.querySelectorAll('.n').forEach(item => {
+            item.innerText = item.innerText.replace(/[A-G][#b]?/g, m => {
+                let n = m==='Bb'?'A#':m==='Eb'?'D#':m==='Ab'?'G#':m==='Db'?'C#':m==='Gb'?'F#':m;
+                return notes[(notes.indexOf(n) + diff + 12) % 12];
+            });
+        });
+        curIdx = targetIdx;
+    }
+
+    function resize(d) {
+        let el = document.getElementById('lyrics-container');
+        let style = window.getComputedStyle(el, null).getPropertyValue('font-size');
+        el.style.fontSize = (parseFloat(style) + d) + 'px';
+    }
+</script>
+
+</body>
+</html>
