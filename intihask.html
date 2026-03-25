@@ -9,28 +9,39 @@
         :root { --bg: #ffffff; --text: #1a1a1a; --chord: #d32f2f; --panel: #fcfcfc; --border: #eee; }
         body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; }
         .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; display: grid; grid-template-columns: 1fr 280px; gap: 40px; }
+        
         .header { grid-column: 1 / -1; text-align: center; margin-bottom: 20px; }
         h1 { font-size: 2.2rem; color: #0D2344; margin: 0; }
         .artist { color: #888; text-transform: uppercase; letter-spacing: 2px; }
 
-        .top-panel { grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border); padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .transpose-bar { display: flex; gap: 10px; }
-        .transpose-bar span { font-weight: bold; cursor: pointer; padding: 5px 8px; border-bottom: 2px solid transparent; transition: 0.3s; }
+        /* ÜST PANEL */
+        .top-panel { grid-column: 1 / -1; background: var(--panel); border: 1px solid var(--border); padding: 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+        
+        .transpose-section { display: flex; align-items: center; gap: 15px; }
+        .kolay-v-btn { background: #d32f2f; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
+        
+        .transpose-bar { display: flex; gap: 8px; border-left: 1px solid #ddd; padding-left: 15px; }
+        .transpose-bar span { font-weight: bold; cursor: pointer; padding: 2px 6px; border-bottom: 2px solid transparent; transition: 0.3s; font-size: 1rem; }
         .active-note { color: var(--chord) !important; border-bottom: 2px solid var(--chord) !important; }
 
-        .font-btns button { border: 1px solid #ccc; background: white; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-weight: bold; margin-left: 5px; }
+        .font-section { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 0.9rem; color: #666; }
+        .font-btns button { border: 1px solid #ccc; background: white; padding: 5px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; }
 
+        /* SOL: ŞARKI İÇERİĞİ */
         .lyrics-area { border-right: 1px solid var(--border); padding-right: 30px; }
-        .intro-box { background: #f9f9f9; border: 1px dashed #ccc; padding: 15px; margin: 20px 0; font-family: 'Courier Prime', monospace; font-weight: bold; color: var(--chord); }
+        .section-label { color: #999; font-weight: bold; font-size: 0.8rem; margin-bottom: 5px; text-transform: uppercase; }
         
-        #chords { font-family: 'Courier Prime', monospace; white-space: pre; font-size: 1.2rem; line-height: 2.8; }
-        /* Akorların kelime üstünde durması için */
-        .chord { color: var(--chord); font-weight: bold; display: inline-block; position: absolute; margin-top: -1.3em; }
+        .intro-box { background: #f9f9f9; border: 1px dashed #ccc; padding: 10px 15px; margin-bottom: 30px; border-radius: 6px; font-family: 'Courier Prime', monospace; font-weight: bold; color: var(--chord); font-size: 13pt; }
+        
+        /* Akor-Söz Yakınlığı Ayarı */
+        #chords { font-family: 'Courier Prime', monospace; white-space: pre; font-size: 13pt; line-height: 2.2; position: relative; }
+        .chord { color: var(--chord); font-weight: bold; display: inline-block; position: absolute; margin-top: -1.0em; } /* -1.0em ile yaklaştırdık */
 
+        /* SAĞ: RİTİM */
         .sidebar-box { background: var(--panel); border: 1px solid var(--border); padding: 20px; border-radius: 8px; position: sticky; top: 20px; }
-        .ritim-label { font-weight: bold; border-bottom: 2px solid var(--chord); margin-bottom: 10px; display: inline-block; }
+        .ritim-label { font-weight: bold; border-bottom: 2px solid var(--chord); margin-bottom: 10px; display: inline-block; font-size: 0.9rem; }
 
-        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } .lyrics-area { border: none; padding: 0; } }
+        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } .lyrics-area { border: none; padding: 0; } .top-panel { flex-direction: column; align-items: flex-start; } }
     </style>
 </head>
 <body>
@@ -42,30 +53,38 @@
     </div>
 
     <div class="top-panel">
-        <div class="transpose-bar">
-            <span onclick="transposeTo('C', this)">C</span>
-            <span onclick="transposeTo('C#', this)">C#</span>
-            <span onclick="transposeTo('D', this)">D</span>
-            <span onclick="transposeTo('D#', this)">D#</span>
-            <span onclick="transposeTo('E', this)">E</span>
-            <span onclick="transposeTo('F', this)">F</span>
-            <span onclick="transposeTo('F#', this)">F#</span>
-            <span onclick="transposeTo('G', this)">G</span>
-            <span onclick="transposeTo('G#', this)">G#</span>
-            <span class="active-note" onclick="transposeTo('A', this)">A</span>
-            <span onclick="transposeTo('A#', this)">A#</span>
-            <span onclick="transposeTo('B', this)">B</span>
+        <div class="transpose-section">
+            <button class="kolay-v-btn" onclick="transposeTo('A', document.getElementById('note-A'))">KOLAY VERSİYON</button>
+            <div class="transpose-bar">
+                <span onclick="transposeTo('C', this)">C</span>
+                <span onclick="transposeTo('C#', this)">C#</span>
+                <span onclick="transposeTo('D', this)">D</span>
+                <span onclick="transposeTo('D#', this)">D#</span>
+                <span onclick="transposeTo('E', this)">E</span>
+                <span onclick="transposeTo('F', this)">F</span>
+                <span onclick="transposeTo('F#', this)">F#</span>
+                <span onclick="transposeTo('G', this)">G</span>
+                <span onclick="transposeTo('G#', this)">G#</span>
+                <span id="note-A" class="active-note" onclick="transposeTo('A', this)">A</span>
+                <span onclick="transposeTo('A#', this)">A#</span>
+                <span onclick="transposeTo('B', this)">B</span>
+            </div>
         </div>
-        <div class="font-btns">
-            <button onclick="resize(2)">A+</button>
-            <button onclick="resize(-2)">A-</button>
+
+        <div class="font-section">
+            Yazı Boyutu
+            <div class="font-btns">
+                <button onclick="resize(2)">A+</button>
+                <button onclick="resize(-2)">A-</button>
+            </div>
         </div>
     </div>
 
     <div class="lyrics-area">
-        <div style="color: #999; font-weight: bold;">[INTRO]</div>
+        <div class="section-label">[Intro]</div>
         <div class="intro-box"><span class="c-note">Am</span> - <span class="c-note">E</span> - <span class="c-note">F</span> - <span class="c-note">E</span>  (x2)</div>
         
+        <div class="section-label">[Sözler]</div>
         <div id="chords">
 <span class="chord c-note">Am</span>                    <span class="chord c-note">E</span>
 Bir tek dileğim var mutlusundur umarım
@@ -82,7 +101,7 @@ Senin için bitti her şey biliyorum
     <div class="sidebar">
         <div class="sidebar-box">
             <div class="ritim-label">RİTİM</div>
-            <div style="font-family: 'Courier Prime'; letter-spacing: 2px; font-weight:bold;">V  V  ^  ^  V  ^</div>
+            <div style="font-family: 'Courier Prime'; letter-spacing: 2px; font-weight:bold; font-size: 1.1rem;">V  V  ^  ^  V  ^</div>
             <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">4/4 Slow Pop</p>
         </div>
     </div>
@@ -95,25 +114,17 @@ Senin için bitti her şey biliyorum
     function transposeTo(targetNote, el) {
         const targetIndex = notes.indexOf(targetNote);
         const diff = targetIndex - currentKeyIndex;
-        if (diff === 0) return;
+        if (diff === 0 && !el.classList.contains('active-note')) return;
 
-        // Görsel efekt: Alt çizgiyi güncelle
         document.querySelectorAll('.transpose-bar span').forEach(s => s.classList.remove('active-note'));
         el.classList.add('active-note');
 
-        // Bütün akorları güncelle
         document.querySelectorAll('.c-note').forEach(chordEl => {
             let originalText = chordEl.innerText;
-            // Akorun kök notasını (A, C#, vb.) ve eklerini (m, 7, vb.) ayır
             chordEl.innerText = originalText.replace(/[A-G][#b]?/g, (match) => {
-                let note = match;
-                if (note === 'Bb') note = 'A#'; if (note === 'Eb') note = 'D#';
-                if (note === 'Ab') note = 'G#'; if (note === 'Db') note = 'C#';
-                if (note === 'Gb') note = 'F#';
-                
+                let note = match === 'Bb' ? 'A#' : (match === 'Eb' ? 'D#' : (match === 'Ab' ? 'G#' : (match === 'Db' ? 'C#' : (match === 'Gb' ? 'F#' : match))));
                 let idx = notes.indexOf(note);
-                let newIdx = (idx + diff + 12) % 12;
-                return notes[newIdx];
+                return notes[(idx + diff + 12) % 12];
             });
         });
         currentKeyIndex = targetIndex;
@@ -121,8 +132,10 @@ Senin için bitti her şey biliyorum
 
     function resize(delta) {
         let el = document.getElementById('chords');
+        let intro = document.querySelector('.intro-box');
         let cur = parseInt(window.getComputedStyle(el).fontSize);
         el.style.fontSize = (cur + delta) + 'px';
+        intro.style.fontSize = (cur + delta) + 'px';
     }
 </script>
 </body>
