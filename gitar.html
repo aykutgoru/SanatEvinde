@@ -11,35 +11,49 @@
         
         h1 { font-size: 2.5rem; letter-spacing: 8px; text-align: center; font-weight: 300; text-transform: uppercase; margin-bottom: 50px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
 
-        /* ŞARKI LİSTESİ SÜTUN YAPISI */
+        /* SÜTUN YAPISI: Şarkılar önce aşağı doğru dizilir */
         .song-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Yan yana 2 sütun */
-            gap: 20px 60px; /* Satır ve Sütun boşluğu */
+            display: block;
+            column-count: 2; /* 2 Sütun yap */
+            column-gap: 80px; /* Sütunlar arası boşluk */
             padding: 0;
             list-style: none;
         }
 
-        .song-list li { border-bottom: 1px solid #f0f0f0; padding: 10px 0; }
+        /* Mobil ekranda tek sütuna düş */
+        @media (max-width: 768px) {
+            .song-list { column-count: 1; }
+        }
+
+        .song-list li { 
+            border-bottom: 1px solid #f0f0f0; 
+            padding: 12px 0; 
+            break-inside: avoid; /* Şarkı isminin yarısı bir sütunda yarısı diğerinde kalmasın */
+        }
         
         .song-list a {
             text-decoration: none;
             color: #333;
             font-size: 1.1rem;
-            display: flex;
-            justify-content: space-between;
-            transition: 0.3s;
+            display: block;
+            transition: 0.3s ease;
         }
 
-        .song-list a:hover { color: #d32f2f; transform: translateX(5px); }
-        .song-number { color: #ccc; font-size: 0.9rem; margin-right: 15px; }
-
-        .back-link { text-decoration: none; color: #999; font-size: 0.8rem; letter-spacing: 2px; }
-        
-        /* Mobil Ekranlarda Tek Sütun Olsun */
-        @media (max-width: 768px) {
-            .song-list { grid-template-columns: 1fr; }
+        /* İstediğin o güzel kayma hareketi */
+        .song-list a:hover { 
+            color: #d32f2f; 
+            padding-left: 10px; 
         }
+
+        .song-number { 
+            color: #ccc; 
+            font-size: 0.8rem; 
+            margin-right: 15px; 
+            font-weight: 400;
+        }
+
+        .back-link { text-decoration: none; color: #999; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
+        .back-link:hover { color: #000; }
     </style>
 </head>
 <body>
@@ -51,14 +65,12 @@
     <ul class="song-list">
         <li>
             <a href="caddelerde-ruzgar.html">
-                <span><span class="song-number">01</span> Caddelerde Rüzgar</span>
-                <span>→</span>
+                <span class="song-number">01</span> Caddelerde Rüzgar
             </a>
         </li>
         <li>
             <a href="akdeniz-aksamlari.html">
-                <span><span class="song-number">02</span> Akdeniz Akşamları</span>
-                <span>→</span>
+                <span class="song-number">02</span> Akdeniz Akşamları
             </a>
         </li>
         </ul>
